@@ -3,7 +3,7 @@ play() {
     for line in $(cat $1); do
         link=$(./youtube-dl -s --get-url ytsearch:$line)
         vlc "$link" 2>/dev/null
-        exit 0 
+        #exit 0 
     done
 }
 

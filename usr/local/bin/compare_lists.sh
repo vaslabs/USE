@@ -8,25 +8,44 @@ knownEntries="";
 uknownEntries="";
 
 function compare_lists {
-	while read -r lineA; do
+	while read -r lineB; do
 		found=false
-		while read -r lineB && [ "$found" == "false" ]; do
+		while read -r lineA && [ "$found" == "false" ]; do
 			if [ "$lineA" == "$lineB" ]; then
 				if [ "X${knownEntries}" == "X" ]; then
-					knownEntries="${lineA}\n"
+					knownEntries="${lineB}
+"
 				else
-					knownEntries+="${lineA}\n"
+					knownEntries+="${lineB}
+"
 				fi
-				#echo "known found:$lineA"
 				found=true
 			fi
-		done < "$pathListB";
+		done < "$pathListA";
 		if [ "$found" == "false" ]; then
-			#echo "unknown found:$lineA"
 			if [ "X${uknownEntries}" == "X" ]; then
-					uknownEntries="${lineA}\n"
-				else
-					uknownEntries+="${lineA}\n"
+					uknownEntries="${lineB}
+"
+			else
+					uknownEntries+="${lineB}
+"
+			fi
+		fi
+	done < "$pathListB";
+	while read -r lineA; do
+		found=false
+		while read -r cknown && [ "$found" == "false" ]; do
+			if [ "$cknown" == "$lineA" ]; then
+				found=true
+			fi
+		done <<< "$knownEntries";
+		if [ "$found" == "false" ]; then
+			if [ "X${uknownEntries}" == "X" ]; then
+					uknownEntries="${lineA}
+"
+			else
+					uknownEntries+="${lineA}
+"
 			fi
 		fi
 	done < "$pathListA";
