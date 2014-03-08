@@ -1,10 +1,12 @@
 #!/bin/bash
 play() {
-    for line in $(cat $1); do
-        link=$(./youtube-dl -s --get-url ytsearch:$line)
+    while read line; do
+        link=$(./youtube-dl -s --get-url ytsearch:"$line")
         vlc "$link" 2>/dev/null
-        exit 0 
-    done
+        #exit 0 
+        
+    done < $1
+    
 }
 
 list_music() {
